@@ -1,0 +1,35 @@
+#include <mutex>
+class Foo {
+private:
+    std::mutex firstFuncMutex;
+    std::mutex secFuncMutex;
+    
+public:
+    Foo() {
+        // Lock the first and second function, to prevent directing calling third.
+        //Simple way of using mutex. Can be optimized further for performance.
+        firstFuncMutex.lock();
+        secFuncMutex.lock();
+    }
+
+    void first(function<void()> printFirst) {
+        
+        // printFirst() outputs "first". Do not change or remove this line.
+        printFirst();
+        firstFuncMutex.unlock();
+    }
+
+    void second(function<void()> printSecond) {
+        firstFuncMutex.lock();
+        // printSecond() outputs "second". Do not change or remove this line.
+        printSecond();
+        secFuncMutex.unlock();
+    }
+
+    void third(function<void()> printThird) {
+        secFuncMutex.lock();
+        // printThird() outputs "third". Do not change or remove this line.
+        printThird();
+        secFuncMutex.unlock();
+    }
+};

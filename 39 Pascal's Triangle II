@@ -1,0 +1,51 @@
+/**** C++ Solution ******/
+vector<int> getRow(int rowIndex) {
+    vector<int> listIndexLine;
+    if(rowIndex < 0 && rowIndex > 33){
+        return listIndexLine;
+    }
+    //Check the values
+    long int value = 1;
+    int i;
+    listIndexLine.push_back(value);
+    for(i=1; i <= rowIndex; i++) {
+        value = (int)value*(rowIndex-i+1)/i;
+        listIndexLine.push_back(value);
+    }
+    return listIndexLine;
+
+}
+
+
+/************** Java Solution **********/
+public List<Integer> getRow(int rowIndex) {
+    Vector<Integer> listIndexLine = new Vector<Integer>();
+    if(rowIndex < 0 && rowIndex > 33){
+        return listIndexLine;
+    }
+    //Check the values
+    Integer value = 1;
+    listIndexLine.add(value);
+    for(Integer i=1; i < rowIndex+1; i++) {
+        value = value*(rowIndex-i+1)/i;
+        listIndexLine.add(value);
+    }
+    return listIndexLine;
+}
+
+/******************** Python Solution ******************/
+def getRow(self, rowIndex):
+    """
+    :type rowIndex: int
+    :rtype: List[int]
+    """
+    listIndexLine = []
+    if(rowIndex < 0 and rowIndex > 33):
+        return listIndexLine
+    #Check the values
+    value = 1
+    listIndexLine.append(value)
+    for i in range(1, rowIndex+1):
+        value = int(value*(rowIndex-i+1)/i)
+        listIndexLine.append(value)
+    return listIndexLine

@@ -1,0 +1,99 @@
+/***************************** Problem ********************/
+Given a binary tree, return the level order traversal of its nodes' values. (ie, from left to right, level by level).
+
+For example:
+Given binary tree [3,9,20,null,null,15,7],
+    3
+   / \
+  9  20
+    /  \
+   15   7
+return its level order traversal as:
+[
+  [3],
+  [9,20],
+  [15,7]
+]
+/**************** Problem END ****************************/
+/* Recursive Implementation */
+class Solution {
+public:
+    // Return value variable
+    vector<vector<int>> resultValue;
+    
+    // Use another recursive function while passing the node and level to put in queue
+    void levelOrderDepth(TreeNode *root, int depth){
+        if(root == NULL) return;
+        // Check to increase the vector size.
+        if(resultValue.size() == depth)
+            resultValue.push_back(vector<int>());
+    
+        // Value in return vector and call for left and rigth child
+        resultValue[depth].push_back(root->val);
+        levelOrderDepth(root->left, depth + 1);
+        levelOrderDepth(root->right, depth + 1);
+    }
+    
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        /* Approach: USe a Queue to maintain the node and their child(next level)
+            Pop from Queue will get the node from same level.
+        */
+        if (root == NULL){
+            return resultValue;
+        }
+        levelOrderDepth(root, 0);
+        return resultValue;
+    }
+};
+
+/*********** NOte: T(n) = O(n2).
+
+/*********************** Queue Implementation ***********************/
+/************ Reduce to O(n) for time complexity and better optimization **********/
+class Solution {
+public:
+    // Return value variable
+    vector<vector<int>> resultValue;
+    list<Node*> queue;
+    list<int> queueLevel;
+    
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        /* Approach: USe a Queue to maintain the node and their child(next level)
+            Pop from Queue will get the node from same level.
+        */
+        if (root == NULL){
+            return resultValue;
+        }
+        // create an empty queue and enqueue root node
+        queue.push_back(root);
+        queueLevel.push_back(0);
+
+        // pointer to store current node
+        Node* curr = nullptr;
+        int level = 0;
+        // Initialize the return value vector
+        resultValue.push_back(vector<int>());
+
+        // loop till queue is empty
+        while (queue.size())
+        {
+            // process each node in queue and enqueue their
+            // non-empty left and right child to queue
+            curr = queue.front();
+            queue.pop_front();
+            level = queueLevel.front();
+            queueLevel.pop_front();
+            
+            // Store value in return vector
+            resultValue[level].push_back(curr->val);
+
+            if (curr->left)
+               queue.push_back(curr->left);
+               queueLevel.push_back(level + 1);
+
+            if (curr->right)
+               queue.push_back(curr->right);
+               queueLevel.push_back(level + 1);
+        }
+    }
+};

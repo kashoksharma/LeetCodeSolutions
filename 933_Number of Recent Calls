@@ -31,7 +31,7 @@ Constraints:
 Each test case will call ping with strictly increasing values of t.
 At most 104 calls will be made to ping.
 
-[Solution]
+/***************** Python Solution ***************************/
 from collections import deque
 class RecentCounter:
 
@@ -45,3 +45,24 @@ class RecentCounter:
         while len(self.q) and self.q[0] < timeDiff:
             self.q.popleft()
         return len(self.q)
+
+/********************* C++ Solution ***********************************/
+class RecentCounter {
+public:
+    vector<int> requests;
+    RecentCounter() {
+        requests.clear();    //initializes the counter with zero requests
+    }
+    
+    int ping(int t) {
+       requests.push_back(t);
+        int n=requests.size();
+        int l=0,r=n-1;
+        while(l < r) {
+            int mid = l + (r - l) / 2;
+            if (requests[mid] < t - 3000) l = mid + 1;
+            else r = mid;
+        }
+        return n-l;
+    }
+};

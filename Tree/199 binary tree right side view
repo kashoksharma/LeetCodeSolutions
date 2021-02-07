@@ -1,0 +1,84 @@
+Given a binary tree, imagine yourself standing on the right side of it, return the values of the nodes you can see ordered from top to bottom.
+
+Example:
+
+Input: [1,2,3,null,5,null,4]
+Output: [1, 3, 4]
+Explanation:
+
+   1            <---
+ /   \
+2     3         <---
+ \     \
+  5     4       <---
+  
+  /************** Approach ***********/
+  /* Need to traverse the Tree and check the right node at each level */
+  /* This is the case of DFS with order traversal. We can go through Root -> Right -> left node traversal */
+  /* Store the right node value based on Level and return the values */
+  /* Implementation vary based on programming language */
+  
+  /************* C++ Solution ********************/
+  class Solution {
+private:
+    vector<int> ans;
+public:
+    void dfs(TreeNode* root, int height) {
+        if (!root) return;
+        // Height is the level of tree. Check if it is added in ans or not by checking size.
+        if (height == ans.size())
+            ans.push_back(root->val);
+        dfs(root->right, height + 1);
+        dfs(root->left, height + 1);
+    }
+    
+    vector<int> rightSideView(TreeNode* root) {
+        dfs(root, 0);
+        return ans;
+    }
+};
+
+/************************ Python Solution ***********************/
+class Solution:
+    def rightSideView(self, root: TreeNode) -> List[int]:        
+        # Use dictionary to store Right node values
+        ans = {}
+        def dfs(node, H):
+            if not node: return 
+            # check if this is the right most node value on H level
+            if H not in ans: ans[H] = node.val
+            dfs(node.right, H + 1)
+            dfs(node.left, H + 1)
+            
+        dfs(root, 0)
+        # No need to traverse through dictionary to return values.
+        # return [ans[i] for i in range(len(ans))]
+        # Dictionary return the ordered values in format
+        return ans.values()
+        
+/******************** Java Solution. Can be implemented like C++ solution **********/
+/************ Use Queue to solve it with different approach ***********************/
+class Solution {
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> ans = new ArrayList<Integer>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        // Check for error handling
+        if(root == null) return ans;
+        
+        // BFS while maintaining the queue. Offer() method better than add().
+        // Another approach to use MAP for storing Level as Key and Node Value as value. 
+        queue.offer(root);
+        while(!queue.isEmpty())
+        {
+            int size = queue.size();
+            for(int i = 0; i < size; i++)
+            {
+                TreeNode currentNode = queue.poll();
+                if(i == 0) ans.add(currentNode.val);
+                if(currentNode.right != null) queue.offer(currentNode.right);
+                if(currentNode.left != null) queue.offer(currentNode.left);
+            }
+        }
+        return ans;
+    }
+}

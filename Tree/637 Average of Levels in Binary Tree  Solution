@@ -1,0 +1,84 @@
+Given a non-empty binary tree, return the average value of the nodes on each level in the form of an array.
+Example 1:
+Input:
+    3
+   / \
+  9  20
+    /  \
+   15   7
+Output: [3, 14.5, 11]
+Explanation:
+The average value of nodes on level 0 is 3,  on level 1 is 14.5, and on level 2 is 11. Hence return [3, 14.5, 11].
+Note:
+The range of node's value is in the range of 32-bit signed integer.
+
+/**************************** Solution Approach *************************/
+// BFS Approach with level order traversal using queue.
+// at every level do summation of values of all the nodes.
+// divide the sum by size of queue and store it as result.
+/************************************************************************/
+
+/********************* C++ Solution *************************************/
+vector<double> averageOfLevels(TreeNode* root) {
+    // BFS Approach with level order traversal using queue.
+    // at every level do summation of values of all the nodes.
+    // divide the sum by size of queue and store in vector.
+    vector <double> result;
+    queue <TreeNode*> q;
+    q.push(root);
+
+    //Level order traversal
+    while(!q.empty()){
+        long long int size = q.size(), sum = 0;
+
+        for(int i = 0; i < size; i++){
+            auto temp = q.front();
+            q.pop();
+
+            sum += temp->val;
+            if (temp->left) q.push(temp->left);
+            if (temp->right) q.push(temp->right);
+        }
+        result.push_back((double)sum/size);
+    }
+    return result;
+}
+
+/*************************** Java solution *************************/
+public List<Double> averageOfLevels(TreeNode root) {
+    List<Double> result = new ArrayList<>();;
+    Queue <TreeNode> q = new LinkedList<>(List.of(root));;
+    q.offer(root);
+
+    //Level order traversal
+    while(q.size() > 0){
+        double size = q.size(), sum = 0;
+
+        for(int i = 0; i < size; i++){
+            TreeNode temp = q.poll();
+
+            sum += temp.val;
+            if (temp.left != null) q.offer(temp.left);
+            if (temp.right != null) q.offer(temp.right);
+        }
+        result.add((double)sum/size);
+    }
+    return result;
+}
+
+/************************* Python Solution ************************/
+def averageOfLevels(self, root: TreeNode) -> List[float]:
+    # BFS solution implemented using the queue
+    queue = deque([root])
+    result = []
+
+    while queue:
+        k, sum = len(queue), 0
+        for i in range(len(queue)):
+            node = queue.popleft()
+            sum += node.val
+            if node.left: queue.append(node.left)
+            if node.right: queue.append(node.right)
+        result.append(sum/k)
+
+    return result

@@ -1,0 +1,78 @@
+Given the root of a binary tree, return the same tree where every subtree (of the given tree) not containing a 1 has been removed.
+A subtree of a node node is node plus every node that is a descendant of node.
+
+Example 1:
+Input: root = [1,null,0,0,1]
+Output: [1,null,0,null,1]
+Explanation: 
+Only the red nodes satisfy the property "every subtree not containing a 1".
+The diagram on the right represents the answer.
+
+Example 2:
+Input: root = [1,0,1,0,0,0,1]
+Output: [1,null,1,null,1]
+
+Example 3:
+Input: root = [1,1,0,1,1,0,1,0]
+Output: [1,1,0,1,1,null,1]
+ 
+
+Constraints:
+The number of nodes in the tree is in the range [1, 200].
+Node.val is either 0 or 1.
+
+Solution Approach:
+ Traverse till leaf and check for the zero values.
+ Root with both child have 0 value or no child need to be deleted
+ Use recursion with 0 condition return "nullptr", null, none.
+ 
+ /************* C++ Solution ***************/
+ TreeNode* pruneTree(TreeNode* root) {        
+    if (root == nullptr) return nullptr;
+    // Update the left and right root child.
+    root->left = pruneTree(root->left);
+    root->right = pruneTree(root->right);
+    // Condition that root and child are fine.
+    if (root->val == 1 || root->left != nullptr or root->right != nullptr) 
+        return root;
+    // Root have 0 value. delete the root and return nullptr.
+    return nullptr; 
+}
+
+/*************** Java Solution ***************/
+public TreeNode pruneTree(TreeNode root) {
+    if (root == null) return null;
+    // Update the left and right root child.
+    root.left = pruneTree(root.left);
+    root.right = pruneTree(root.right);
+    // Condition that root and child are fine.
+    if (root.val == 1 || (root.left != null || root.right != null)) 
+        return root;
+    // Root have 0 value. delete the root and return nullptr.
+    return null; 
+}
+
+/**************** Java Script solution ************/
+var pruneTree = function(root) {
+    if (root == null) return null;
+    // Update the left and right root child.
+    root.left = pruneTree(root.left);
+    root.right = pruneTree(root.right);
+    // Condition that root and child are fine.
+    if (root.val == 1 || (root.left != null || root.right != null)) 
+        return root;
+    // Root have 0 value. delete the root and return nullptr.
+    return null; 
+};
+
+/*************** Python Solution *************/
+def pruneTree(self, root: TreeNode) -> TreeNode:
+    if root is None: return None
+    # Update the left and right root child.
+    root.left = self.pruneTree(root.left)
+    root.right = self.pruneTree(root.right)
+    # Condition that root and child are fine.
+    if root.val == 1 or (root.left != None or root.right != None):
+        return root
+    # Root have 0 value. delete the root and return None.
+    return None
